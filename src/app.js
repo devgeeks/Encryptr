@@ -100,6 +100,53 @@ var Encryptr = (function (window, console, undefined) {
     // ...
   };
 
+  /** Prepare session-unique counter for internal use by .getNewUnique().
+   *
+   * Depends on established login, specifically, window.app.session.
+   *
+   * @param (deferred) ready (optional) .resolve()s when counter is ready.
+   */
+  Encryptr.prototype.establishCounter = function (ready) {
+    window.cryptonutils.loadOrCreateContainer(
+      "_uCounter",
+      window.app.session,
+      function (container) {
+        window.app._uCounter = container;
+        window.cryptonutils.getOrCreateSetting(
+          container, "counter", 1,
+          function (setting) {
+            if (ready) {
+              ready.resolve();
+            }
+          },
+          function (errmsg) {
+            console.log("Failed to set unique counter: " + errmsg);
+          });
+      },
+      function (errmsg) {
+        console.log("Failed to establish unique counter: " + errmsg);
+      });
+  };
+  /** Return a new session-unique integer. */
+  Encryptr.prototype.getNewUnique = function() {
+    if (! window.app.session) {
+      throw new Error("Session counter increment attempted without session");
+    }
+    else if (! window.app._uCounter || ! window.app._uCounter.keys.counter) {
+      throw new Error("Session counter not properly established");
+    }
+    window.app._uCounter.keys.counter += 1;
+    window.app._uCounter.save(
+      function (err) {
+        if (err) {
+          // Not a lot we can do.
+          console.log("Failed to save unique counter!");
+        }
+      }
+    );
+    return window.app._uCounter.keys.counter;
+  };
+
   return Encryptr;
 
 })(this, this.console);

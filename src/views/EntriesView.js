@@ -37,10 +37,15 @@
       this.subViews.push(view);
     },
     viewActivate: function(event) {
+      this.priorEntriesCollection = window.app.currentEntriesCollection;
+      window.app.currentEntriesCollection = this.collection;
       this.collection.fetch();
+      this.addAll();
     },
     viewDeactivate: function(event) {
-      // ...
+      // Reestablish prior entries collection. Will be superceded when
+      // another entries view is activated.
+      window.app.currentEntriesCollection = this.priorEntriesCollection;
     },
     close: function() {
       _.each(this.subViews, function(view) {
@@ -70,13 +75,26 @@
       return this;
     },
     a_clickHandler: function(event) {
-      var _this = this;
-      if (!$(".menu").hasClass("dismissed") || !$(".addMenu").hasClass("dismissed")) {
+      var _this = this,
+          model = this.model,
+          contentsId = model.get("contentsId");
+      if (!$(".menu").hasClass("dismissed") ||
+          !$(".addMenu").hasClass("dismissed")) {
         return;
       }
-      window.app.navigator.pushView(window.app.EntryView, {
-        model: _this.model
-      }, window.app.defaultEffect);
+      if (contentsId) {
+        model.fetch();
+        window.app.navigator.pushView(
+          window.app.EntriesView,
+          {collection: model.contents},
+          window.app.noEffect
+        );
+      }
+      else {
+        window.app.navigator.pushView(window.app.EntryView, {
+          model: _this.model
+        }, window.app.defaultEffect);
+      }
     },
     close: function() {
       this.remove();

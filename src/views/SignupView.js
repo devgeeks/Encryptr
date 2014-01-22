@@ -65,28 +65,33 @@
             return;
           }
           window.app.session = session;
+          var counterEstablished = $.Deferred();
+          window.app.establishCounter(counterEstablished);
           window.app.accountModel = new window.app.AccountModel({
             username: username,
             passphrase: passphrase,
             session: session
           });
-          window.app.session.create("entries", function(err, entries){
-            if (err) {
-              navigator.notification.alert(err);
+          var rcID = window.app.EntriesCollection.prototype.rootContainerID;
+          counterEstablished.done(function () {
+            window.app.session.create(rcID, function(err, entries){
+              if (err) {
+                navigator.notification.alert(err);
+                $(".blocker").hide();
+                return;
+              }
+              // Set up MainView
+              window.app.mainView = new window.app.MainView().render();
+              // Push an EntriesView
+              window.app.navigator.pushView(
+                window.app.EntriesView,
+                { collection: new window.app.EntriesCollection() },
+                window.app.noEffect
+              );
               $(".blocker").hide();
-              return;
-            }
-            // Set up MainView
-            window.app.mainView = new window.app.MainView().render();
-            // Push a ListView 
-            window.app.navigator.pushView(
-              window.app.EntriesView,
-              { collection: new window.app.EntriesCollection() },
-              window.app.noEffect
-            );
-            $(".blocker").hide();
-            window.app.loginView.dismiss();
-            _this.dismiss();
+              window.app.loginView.dismiss();
+              _this.dismiss();
+            });
           });
         });
       });

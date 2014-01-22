@@ -28,6 +28,7 @@ module.exports = function(grunt) {
           'components/zepto/src/data.js',
           'components/zepto/src/detect.js',
           'components/zepto/src/deferred.js',
+          'components/zepto/src/callbacks.js',
           'components/zepto/src/event.js',
           'components/zepto/src/form.js',
           'components/zepto/src/fx.js',

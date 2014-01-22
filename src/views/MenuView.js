@@ -9,11 +9,15 @@
   var MenuView = Backbone.View.extend({
     className: "menu",
     events: {
+      "click .menu-back": "back_clickHandler",
       "click .menu-settings": "settings_clickHandler",
       "click .menu-logout": "logout_clickHandler"
     },
     initialize: function() {
-      _.bindAll(this, "settings_clickHandler", "logout_clickHandler");
+      _.bindAll(this,
+                "settings_clickHandler",
+                "logout_clickHandler",
+                "back_clickHandler");
     },
     render: function() {
       this.$el.html(window.tmpl["menuView"]({}));
@@ -21,6 +25,13 @@
     },
     settings_clickHandler: function(event) {
       this.dismiss();
+    },
+    back_clickHandler: function(event) {
+      event.preventDefault();
+      this.dismiss();
+      if (window.app.navigator.viewsStack.length > 1) {
+        window.app.navigator.popView(window.app.defaultPopEffect);
+      }
     },
     logout_clickHandler: function(event) {
       event.preventDefault();
@@ -50,6 +61,14 @@
       }
     },
     show: function() {
+      if (! window.app.currentEntriesCollection ||
+          (window.app.currentEntriesCollection.container ===
+           window.app.EntriesCollection.prototype.rootContainerID)) {
+        this.$('.menu-back-section').hide();
+      }
+      else {
+        this.$('.menu-back-section').show();
+      }
       if (this.$el.hasClass("dismissed")) {
         this.$el.removeClass("dismissed");
         this.$("input").removeAttr("disabled");
