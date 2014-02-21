@@ -72,18 +72,25 @@
           window.app.navigator.popView(window.app.defaultPopEffect);
           $(".blocker").hide();
         },
-        error: function(err) {
+        error: function(model, resp, options) {
           $(".blocker").hide();
-          navigator.notification.alert(
-            err,
-            function() {},
-            "Error");
+          if (resp === "Container has not changed") {
+            window.app.toastView.show("Unchanged.");
+          }
+          else {
+            navigator.notification.alert(
+              resp,
+              function() {},
+              "Error");
+          }
         }
       });
     },
     viewActivate: function(event) {
       var _this = this;
-      window.app.mainView.backButtonDisplay(true);
+      //window.app.mainView.backButtonDisplay(true);
+      $(".nav .back-btn").removeClass("hidden");
+      $(".nav .menu-btn").addClass("hidden");
       $(".nav .btn.right").addClass("hidden");
       $(".nav .save-btn").removeClass("hidden");
       window.app.mainView.setTitle(this.model.get("displayName"));
@@ -92,7 +99,9 @@
       }, 100);
     },
     viewDeactivate: function(event) {
-      window.app.mainView.backButtonDisplay(false);
+      //window.app.mainView.backButtonDisplay(false);
+      $(".nav .back-btn").addClass("hidden");
+      $(".nav .menu-btn").removeClass("hidden");
       $(".nav .btn.right").addClass("hidden");
       $(".nav .add-btn").removeClass("hidden");
       window.app.mainView.setTitle("Encryptr");
@@ -105,7 +114,8 @@
         view.close();
       });
       this.remove();
-    }
+    },
+    which: "editView"
   });
   Encryptr.prototype.EditView = EditView;
 
@@ -126,7 +136,8 @@
     },
     close: function() {
       this.remove();
-    }
+    },
+    which: "EditListItemView"
   });
   Encryptr.prototype.EditListItemView = EditListItemView;
 

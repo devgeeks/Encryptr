@@ -25,8 +25,7 @@
           "addButton_clickHandler",
           "saveButton_clickHandler",
           "editButton_clickHandler",
-          "deleteButton_clickHandler",
-          "backButtonDisplay");
+          "deleteButton_clickHandler");
       this.menuView = new Encryptr.prototype.MenuView().render();
       this.menuView.dismiss();
       this.addMenuView = new Encryptr.prototype.AddMenuView().render();
@@ -46,7 +45,9 @@
     },
     backButton_clickHandler: function(event) {
       event.preventDefault();
-      this.backButtonDisplay(false);
+      //this.backButtonDisplay(false);
+      $(".nav .back-btn").addClass("hidden");
+      $(".nav .menu-btn").removeClass("hidden");
       // console.log("back");
       // console.log(Date.now());
       if (window.app.navigator.viewsStack.length > 1) {
@@ -72,15 +73,6 @@
     setTitle: function(title) {
       this.$(".nav .title").html(title);
     },
-    backButtonDisplay: function(show) {
-      if (show) {
-        this.$(".back-btn").removeClass("hidden");
-        this.$(".menu-btn").addClass("hidden");
-        return;
-      }
-      this.$(".back-btn").addClass("hidden");
-      this.$(".menu-btn").removeClass("hidden");
-    },
     menuClose_clickHandler: function(event) {
       if (!this.menuView.$el.hasClass("dismissed") &&
           !$(event.target).hasClass("fa-ellipsis-v") &&
@@ -96,7 +88,8 @@
     close: function() {
       this.menuView.close();
       this.addMenuView.close();
-    }
+    },
+    which: "MainView"
   });
 
   Encryptr.prototype.MainView = MainView;

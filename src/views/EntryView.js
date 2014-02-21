@@ -31,7 +31,8 @@
           this.model.toJSON()
         )
       );
-      window.app.mainView.on("deleteentry", this.deleteButton_clickHandler, this);
+      window.app.mainView.on("deleteentry", this.deleteButton_clickHandler,
+                             this);
       window.app.mainView.once("editentry", this.editButton_clickHandler, this);
 
       // Desktop polyfill for longTap
@@ -63,7 +64,7 @@
     },
     deleteButton_clickHandler: function(event) {
       var _this = this;
-      var message = "Delete this entry?";
+      var message = ("Delete this entry?");
       navigator.notification.confirm(message, function(button) {
         if (button === 1) {
           _this.model.destroy();
@@ -72,24 +73,32 @@
       }, "Confirm delete");
     },
     viewActivate: function(event) {
-      var _this = this;
-      window.app.mainView.backButtonDisplay(true);
+      var _this = this,
+          mainView = window.app.mainView;
+      mainView.on("deleteentry", this.deleteButton_clickHandler, this);
+      mainView.on("editentry", this.editButton_clickHandler, this);
+      $(".nav .back-btn").removeClass("hidden");
+      $(".nav .menu-btn").addClass("hidden");
       $(".nav .btn.right").addClass("hidden");
       $(".nav .edit-btn.right").removeClass("hidden");
       $(".nav .delete-btn").removeClass("hidden");
       window.app.mainView.setTitle(this.model.get("label"));
     },
     viewDeactivate: function(event) {
-      window.app.mainView.backButtonDisplay(false);
+      var mainView = window.app.mainView;
+      //window.app.mainView.backButtonDisplay(false);
+      $(".nav .back-btn").addClass("hidden");
+      $(".nav .menu-btn").removeClass("hidden");
       $(".nav .btn.right").addClass("hidden");
       $(".nav .add-btn.right").removeClass("hidden");
-      window.app.mainView.setTitle("Encryptr");
-      window.app.mainView.off("editentry", null, null);
-      window.app.mainView.off("deleteentry", null, null);
+      mainView.setTitle("Encryptr");
+      mainView.off("editentry", null, null);
+      mainView.off("deleteentry", null, null);
     },
     close: function() {
       this.remove();
-    }
+    },
+    which: "EntryView"
   });
   Encryptr.prototype.EntryView = EntryView;
 

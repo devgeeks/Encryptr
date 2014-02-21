@@ -9,11 +9,19 @@
   var MenuView = Backbone.View.extend({
     className: "menu",
     events: {
+      "click .menu-back": "back_clickHandler",
+      "click .menu-edit": "edit_clickHandler",
+      "click .menu-delete": "delete_clickHandler",
       "click .menu-settings": "settings_clickHandler",
       "click .menu-logout": "logout_clickHandler"
     },
     initialize: function() {
-      _.bindAll(this, "settings_clickHandler", "logout_clickHandler");
+      _.bindAll(this,
+                "settings_clickHandler",
+                "logout_clickHandler",
+                "back_clickHandler",
+                "edit_clickHandler",
+                "delete_clickHandler");
     },
     render: function() {
       this.$el.html(window.tmpl["menuView"]({}));
@@ -21,6 +29,19 @@
     },
     settings_clickHandler: function(event) {
       this.dismiss();
+    },
+    back_clickHandler: function(event) {
+      event.preventDefault();
+      this.dismiss();
+      if (window.app.navigator.viewsStack.length > 1) {
+        window.app.navigator.popView(window.app.defaultPopEffect);
+      }
+    },
+    edit_clickHandler: function(event) {
+      $(document).trigger("editentry");
+    },
+    delete_clickHandler: function(event) {
+      $(document).trigger("deleteentry");
     },
     logout_clickHandler: function(event) {
       event.preventDefault();
@@ -72,7 +93,8 @@
     },
     close: function() {
       this.remove();
-    }
+    },
+    which: "MenuView"
   });
 
   Encryptr.prototype.MenuView = MenuView;

@@ -24,6 +24,9 @@
     },
     render: function() {
       this.$el.html(window.tmpl["entriesView"]({}));
+      window.app.mainView.on("deleteentry", this.deleteButton_clickHandler,
+                             this);
+      window.app.mainView.once("editentry", this.editButton_clickHandler, this);
       return this;
     },
     addAll: function () {
@@ -56,7 +59,10 @@
     },
     viewActivate: function(event) {
       var _this = this;
-      this.collection.fetch({
+
+      _this.priorEntriesCollection = window.app.currentEntriesCollection;
+      window.app.currentEntriesCollection = _this.collection;
+      _this.collection.fetch({
         success: function(entries) {
           if (entries.length === 0) {
             _this.addAll();
@@ -65,16 +71,63 @@
           console.log(err); // @TODO: Handle this error
         }
       });
+
+      window.app.mainView.on("deleteentry",
+                             _this.deleteButton_clickHandler,
+                             _this);
+      window.app.mainView.on("editentry",
+                             _this.editButton_clickHandler,
+                             _this);
+
+      if (_this.collection.theFolder) {
+        $(".nav .back-btn").removeClass("hidden");
+        $(".nav .edit-btn.right").removeClass("hidden");
+        $(".nav .delete-btn").removeClass("hidden");
+        window.app.mainView.setTitle(_this.collection.theFolder.get("label"));
+      }
+      $(".nav .menu-btn").removeClass("hidden");
+
     },
     viewDeactivate: function(event) {
-      // ...
+      // Reestablish prior entries collection. Will be superceded when
+      // another entries view is activated.
+      window.app.currentEntriesCollection = this.priorEntriesCollection;
+
+      if (this.collection.theFolder) {
+        $(".nav .back-btn").addClass("hidden");
+        $(".nav .btn.right").addClass("hidden");
+        $(".nav .delete-btn").addClass("hidden");
+      }
+      window.app.mainView.setTitle("Encryptr");
+      $(".nav .menu-btn").removeClass("hidden");
+      $(".nav .add-btn.right").removeClass("hidden");
+      window.app.mainView.off("editentry", null, null);
+      window.app.mainView.off("deleteentry", null, null);
+    },
+    editButton_clickHandler: function(event) {
+      window.app.navigator.pushView(
+        window.app.EditView,
+        {model: this.collection.theFolder},
+        window.app.noEffect
+      );
+    },
+    deleteButton_clickHandler: function(event) {
+      var _this = this;
+      var message = ("Delete this folder, including contents?");
+      navigator.notification.confirm(message, function(button) {
+        if (button === 1) {
+          _this.collection.theFolder.destroy();
+          window.app.navigator.popView(window.app.defaultPopEffect);
+        }
+      }, "Confirm delete");
     },
     close: function() {
       _.each(this.subViews, function(view) {
         view.close();
       });
       this.remove();
-    }
+    },
+    which: "EntriesView"
   });
   Encryptr.prototype.EntriesView = EntriesView;
 
@@ -97,17 +150,31 @@
       return this;
     },
     a_clickHandler: function(event) {
-      var _this = this;
-      if (!$(".menu").hasClass("dismissed") || !$(".addMenu").hasClass("dismissed")) {
+      var _this = this,
+          model = this.model,
+          contentsId = model.get("contentsId");
+      if (!$(".menu").hasClass("dismissed") ||
+          !$(".addMenu").hasClass("dismissed")) {
         return;
       }
-      window.app.navigator.pushView(window.app.EntryView, {
-        model: _this.model
-      }, window.app.defaultEffect);
+      if (contentsId) {
+        model.fetch();
+        window.app.navigator.pushView(
+          window.app.EntriesView,
+          {collection: model.contents},
+          window.app.noEffect
+        );
+      }
+      else {
+        window.app.navigator.pushView(window.app.EntryView, {
+          model: _this.model
+        }, window.app.defaultEffect);
+      }
     },
     close: function() {
       this.remove();
-    }
+    },
+    which: "EntriesListItemView"
   });
   Encryptr.prototype.EntriesListItemView = EntriesListItemView;
 

@@ -51,7 +51,8 @@ h1 {
   z-index: 2;
 }
 .nav .title {
-  position: absolute;
+  position: fixed;
+  display: inline;
   left: 80px;
   right: 80px;
   color: #ffffff;
@@ -78,17 +79,17 @@ h1 {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 .nav .right {
-  position: absolute;
-  right: 0;
+  position: relative;
+  float: right;
   top: 0;
 }
 .nav .right2 {
-  position: absolute;
-  right: 44px;
+  position: relative;
+  float: right;
   top: 0;
 }
 .nav .left {
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
 }

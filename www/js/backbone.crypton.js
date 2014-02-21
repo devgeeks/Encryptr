@@ -36,12 +36,12 @@
       debug("ERROR: No available session");
       return options.error && options.error("No available session");
     }
-    var container = model.container || options.container;
-    if (!container) {
+    var containerName = model.container || options.container;
+    if (!containerName) {
       debug("ERROR: No container specified");
       return options.error && options.error("No container specified");
     }
-    
+
     debug(method);
     switch (method) {
       case "read":
@@ -53,29 +53,32 @@
           // Should we be calling model.collection.sync?
           return;
         }
-        session.load(container, function(err, entries) {
-          if (err) return errorHandler(err, options);
+        session.load(containerName, function(err, entries) {
+          if (err) {
+            return errorHandler(err, options);
+          }
           entries.get(model[model.idAttribute], function(err, entry) {
             return successHandler(entry);
           });
         });
         break;
       case "create":
-        session.load(container, function(err, entries) {
+        session.load(containerName, function(err, entries) {
           if (err) return errorHandler(err, options);
-          var modelId = guid();
+          var modelId = model.modelId || guid();
           entries.add(modelId, function(err) {
             if (err) return errorHandler(err, options);
             entries.get(modelId, function(err, entry) {
               if (err) return errorHandler(err, options);
               var modelData = model.toJSON();
-              modelData[model.idAttribute] = modelData[model.idAttribute] || modelId;
+              modelData[model.idAttribute] = (modelData[model.idAttribute] ||
+                                              modelId);
               for(var data in modelData) {
                 if (modelData.hasOwnProperty(data)) {
                   entry[data] = modelData[data];
                 }
               }
-              
+
               entries.save(function(err) {
                 if (err) return errorHandler(err, options);
                 model[model.idAttribute] = modelId;
@@ -86,7 +89,7 @@
         });
         break;
       case "update":
-        session.load(container, function(err, entries) {
+        session.load(containerName, function(err, entries) {
           if (err) return errorHandler(err, options);
           entries.get(model[model.idAttribute], function(err, entry) {
             if (err) {
@@ -111,7 +114,7 @@
         });
         break;
       case "delete":
-        session.load(container, function(err, entries) {
+        session.load(containerName, function(err, entries) {
           if (err) return errorHandler(err, options);
           delete entries.keys[model[model.idAttribute]];
           if (model.isNew()) {
