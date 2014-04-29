@@ -214,6 +214,7 @@ module.exports = function(grunt) {
 
   // Default task
   grunt.registerTask('default', ['jshint', 'dot', 'copy', 'concat', 'min', 'shell:mochaspec']);
+  grunt.registerTask('yolo', ['jshint', 'dot', 'copy', 'concat', 'min']);
 
 
 };

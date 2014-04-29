@@ -21,7 +21,7 @@ describe('Encryptr', function() {
   var appURL;
   var $;
 
-  var waitTimeout = 10000;
+  var waitTimeout = 20000;
 
   var newusername = "user" + Date.now().toString();
   var newpassphrase = "shhh" + Date.now().toString();
@@ -468,17 +468,56 @@ describe('Encryptr', function() {
           })
           .then(function() {
             return browser
-              .waitFor(wd.asserters.jsCondition("document.querySelectorAll('.nav .title')[0].innerText === 'Encryptr'"), waitTimeout);
+              .waitFor(wd.asserters.jsCondition(
+                "document.querySelectorAll('.nav .title')[0].innerText === 'Encryptr'"),
+                waitTimeout
+              );
           }).should.eventually.be.ok;
       });
     });
+// Navigate to an entry and begin editing it
+    //describe("Navigate to an entry and begin editing it", function() {
+      //before(function() {
+        //return browser
+          //.waitForElementByCss("li.entry:first-child", waitTimeout)
+          //.then(function() {
+            //return $("li.entry a:first-child").click();
+          //})
+          //.then(function() {
+            //return browser.waitForElementByCss("ul li strong", waitTimeout); // improve this
+          //}).should.eventually.be.ok;
+      //});
+      //it("should have an edit button", function() {
+      //});
+      //it("should be able to click on the edit button and begin editing", function() {
+      //});
+    //});
 // Back out of editing an entry
-    describe("Back out of editing an entry", function() {
-      // ...
-    });
+    //describe("Back out of editing an entry", function() {
+      //it("should be able to click on the back button and go back", function() {
+        //return browser
+          //.waitForElementByCss(".back-btn:not(.hidden)", waitTimeout)
+          //.then(function() {
+            //return browser.waitForElementByCss(".back-btn:not(.hidden)", waitTimeout);
+          //})
+          //.then(function() {
+            //return $(".back-btn").click();
+          //})
+          //.then(function() {
+            //return browser
+              //.waitFor(wd.asserters.jsCondition("document.querySelectorAll('.nav .title')[0].innerText === 'Encryptr'"), waitTimeout);
+          //})
+          //.then(function() {
+            //return browser
+              //.waitFor(wd.asserters.jsCondition("document.querySelectorAll('.emptyEntries')[0].style.display === 'block'"), waitTimeout);
+          //}).should.eventually.be.ok;
+      //});
+    //});
 // Edit a general entry
     describe("Edit a general entry", function() {
-      // ...
+      before(function() {
+        // ...
+      });
     });
 // Delete a general entry
     describe("Delete a general entry", function() {

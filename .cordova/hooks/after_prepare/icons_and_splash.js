@@ -30,6 +30,18 @@ var filestocopy = [{
 }, {
     "merges/android/res/icon/android/icon-96-xhdpi.png": 
     "platforms/android/res/drawable-xhdpi/icon.png"
+}, {
+    "merges/ios/res/icon/ios/icon-57.png": 
+    "platforms/ios/Encryptr/Resources/icons/icon.png"
+}, {
+    "merges/ios/res/icon/ios/icon-57-2x.png": 
+    "platforms/ios/Encryptr/Resources/icons/icon@2x.png"
+}, {
+    "merges/ios/res/icon/ios/icon-72.png": 
+    "platforms/ios/Encryptr/Resources/icons/icon-72.png"
+}, {
+    "merges/ios/res/icon/ios/icon-72-2x.png": 
+    "platforms/ios/Encryptr/Resources/icons/icon-72@2x.png"
 }];
  
 var fs = require('fs');

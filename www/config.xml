@@ -1,15 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.devgeeks.encryptr" version="1.0.0-alpha.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.devgeeks.encryptr" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Encryptr</name>
     <description>
-        A sample Apache Cordova application using Crypton.io.
+      A zero-knowledge, cloud-based e-wallet / password manager powered by Crypton.
     </description>
     <author email="tommy@devgeeks.org" href="http://devgeeks.org">
         Tommy-Carlos Williams (devgeeks)
     </author>
     <content src="index.html" />
     <access origin="https://crypton.io" subdomains="true" />
-    <access origin="https://devgeeks.org" subdomains="true" />
+    <access origin="wss://crypton.io" subdomains="true" />
+    <access origin="*" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />

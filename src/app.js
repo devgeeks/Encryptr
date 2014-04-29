@@ -51,7 +51,7 @@ var Encryptr = (function (window, console, undefined) {
       // What the xhr checks
       checks: {
         xhr: {
-          url: "https://" + window.crypton.host + "/"
+          url: "https://" + window.crypton.host + "/peer/foo"
         }
       }
     };
