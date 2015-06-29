@@ -54,7 +54,7 @@
                 $toView.one(that.transitionEndEvent, transitionEndHandler);
 
                 // Setting initial scale and opacity
-                $toView.css({'opacity': 0, '-webkit-transform': 'scale3d(0.8,1,0.8)', 'transform':'scale3d(0.8,1,0.8)'});
+                $toView.css({'opacity': 0, '-webkit-transform': 'scale3d(0.9,0.9,0.9)', 'transform':'scale3d(0.9,0.9,0.9)'});
 
                 // Setting transition css props
                 $toView.css({'-webkit-transition':'all ' + that.toViewTransitionProps.duration + 's ease-in-out'});
@@ -92,7 +92,7 @@
             }, transDuration * 1.5 * 1000);
 
             if ($toView) $toView.css({'opacity':1, '-webkit-transform':'scale3d(1,1,1)', 'transform':'scale3d(1,1,1)'});
-            if ($fromView) $fromView.css({'opacity':0, '-webkit-transform':'scale3d(0.8,1,0.8)', 'transform':'scale3d(0.8,1,0.8)'});
+            if ($fromView) $fromView.css({'opacity':0, '-webkit-transform':'scale3d(0.9,0.9,0.9)', 'transform':'scale3d(0.9,0.9,0.9)'});
         }
     });
 

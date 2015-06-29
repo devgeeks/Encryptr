@@ -7,17 +7,27 @@
     <author email="tommy@devgeeks.org" href="http://devgeeks.org">
         Tommy-Carlos Williams (devgeeks)
     </author>
-    <content src="index.html" />
     <access origin="https://*.crypton.io" />
     <access origin="https://encryptr.org" />
+    <access origin="https://zk.gs" />
     <access origin="wss://*.crypton.io" />
-    <preference name="orientation" value="default" />
+    <preference name="Orientation" value="default" />
+    <platform name="ios">
+        <content src="http://localhost:47243" />
+        <preference name="Orientation" value="all" />
+    </platform>
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
     <preference name="keepRunning" value="true" />
-    <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="BackupWebStorage" value="none" />
-    <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="AlternateContentSrc" value="http://localhost:47244" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.0.0" />
+    <plugin name="com.verso.cordova.clipboard" spec="^0.1.0" />
+    <plugin name="cordova-labs-wkwebviewengine" spec="https://github.com/apache/cordova-plugins.git#master:wkwebview-engine" />
+    <plugin name="cordova-plugin-device" spec="^1.0.1" />
+    <plugin name="org.devgeeks.privacyscreen" spec="^0.0.5" />
+    <engine name="ios" spec="https://github.com/apache/cordova-ios.git#4.0.x" />
 </widget>

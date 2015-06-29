@@ -254,8 +254,7 @@ a.btn {
   bottom: 0;
   background-color: #333333;
   color: #ffffff;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   z-index: 101;
 }
 .signup {
