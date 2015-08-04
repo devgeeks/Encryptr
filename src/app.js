@@ -299,7 +299,7 @@ var Encryptr = (function (window, console, undefined) {
   Encryptr.prototype.randomInt = function(min, max) {
     var i = rval = bits = bytes = 0;
     var range = max - min;
-    if (range < 2) {
+    if (range < 1) {
       return min;
     }
     if (window.crypto && window.crypto.getRandomValues) {
@@ -316,10 +316,10 @@ var Encryptr = (function (window, console, undefined) {
         }
         bits++;
         mask = mask << 1 | 1;
-        range >>= 1;
+        tmp >>= 1;
       }
       
-      var values = new Uint32Array(bytes);
+      var values = new Uint8Array(bytes);
       do {
         window.crypto.getRandomValues(values);
         
