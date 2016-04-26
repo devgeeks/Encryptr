@@ -293,16 +293,22 @@ var Encryptr = (function (window, console, undefined) {
   Encryptr.prototype.randomString = function(length) {
     var charset = "!@#$%^*()_+{}:?|,[];./~ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
       "abcdefghijklmnopqrstuvwxyz0123456789";
-    var i;
     var result = "";
-    if(window.crypto && window.crypto.getRandomValues) {
-      var values = new Uint32Array(length);
-      window.crypto.getRandomValues(values);
-      for(i = 0; i < length; i++) {
-          result += charset[values[i] % charset.length];
+    var charsLen = charset.length;
+    var maxByte = 256 - (256 % charsLen);
+    var buf, i, randomByte;
+    while (length > 0) {
+      buf = new Uint8Array(Math.ceil(length * 256 / maxByte));
+      window.crypto.getRandomValues(buf);
+      for (i = 0; i < buf.length && length > 0; i++) {
+        randomByte = buf[i];
+        if (randomByte < maxByte) {
+          result += charset.charAt(randomByte % charsLen);
+          length--;
+        }
       }
     }
-    return result; // If you can't say something nice, don't say anything at all
+    return result;
   };
 
   return Encryptr;
