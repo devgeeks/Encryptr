@@ -295,14 +295,54 @@ var Encryptr = (function (window, console, undefined) {
       "abcdefghijklmnopqrstuvwxyz0123456789";
     var i;
     var result = "";
+    var max = charset.length - 1;
     if(window.crypto && window.crypto.getRandomValues) {
-      var values = new Uint32Array(length);
-      window.crypto.getRandomValues(values);
       for(i = 0; i < length; i++) {
-          result += charset[values[i] % charset.length];
+        result += charset[Encryptr.randomInt(0, max)];
       }
     }
     return result; // If you can't say something nice, don't say anything at all
+  };
+  
+  Encryptr.prototype.randomInt = function(min, max) {
+    var i = rval = bits = bytes = 0;
+    var range = max - min;
+    if (range < 1) {
+      return min;
+    }
+    if (window.crypto && window.crypto.getRandomValues) {
+      // Calculate Math.ceil(Math.log(range, 2)) using binary operators
+      var tmp = range;
+      /**
+       * mask should be, in binary, a string of 1s that we can & with our random
+       * value to reduce the number of lookups
+       */
+      var mask = 1;
+      while (tmp > 0) {
+        if (bits % 8 === 0) {
+          bytes++;
+        }
+        bits++;
+        mask = mask << 1 | 1;
+        tmp >>= 1;
+      }
+      
+      var values = new Uint8Array(bytes);
+      do {
+        window.crypto.getRandomValues(values);
+        
+        // Turn the random bytes into an integer
+        rval = 0;
+        for (i = 0; i < bytes; i++) {
+          rval |= (values[i] << (8 * i));
+        }
+        // Apply the mask
+        rval &= mask;
+      } while(rval > range);
+      
+      // We should return a value in the interval [min, max]
+      return (rval + min);
+    }
   };
 
   return Encryptr;
