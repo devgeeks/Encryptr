@@ -29,9 +29,13 @@
     },
     changePassphrase_clickHandler: function(event) {
       event.preventDefault();
-      window.app.navigator.pushView(window.app.PassphraseSettingsView, {
-        model: window.app.accountModel
-      }, window.app.defaultEffect);
+      if (window.online) {
+        window.app.navigator.pushView(window.app.PassphraseSettingsView, {
+          model: window.app.accountModel
+        }, window.app.defaultEffect);
+      } else {
+        window.app.toastView.show("While your device is offline you can't change your passphrase");
+      }
     },
     logout_clickHandler: function(event) {
       event.preventDefault();
