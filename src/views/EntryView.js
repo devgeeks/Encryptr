@@ -82,7 +82,7 @@
       var type = $(event.target).attr('data-type');
       var key;
       if (type === 'Label') {
-        key = { value: this.model.label };
+        key = { value: this.model.toJSON().label };
       } else {
         key = _.findWhere(this.model.get("items"), { key: type });
       }
