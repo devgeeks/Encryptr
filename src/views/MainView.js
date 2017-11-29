@@ -128,7 +128,6 @@
             });
           }, function(){
             self.updatingLocalStorage = false;
-            self.updateLocalStorage(containerChanged);
           });
         });
       } else {
