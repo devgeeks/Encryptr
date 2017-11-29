@@ -39,8 +39,7 @@
         var _this = this;
         this.$("input").attr("disabled", true);
         $(".subviews, .nav").removeClass("less");
-        $(".subviews").attr("style",
-            "overflow: auto !important; -webkit-overflow-scrolling: touch;");
+        $(".subviews").attr("style", "-webkit-overflow-scrolling: touch;");
         this.$el.animate("addMenuHide", 200, "ease-out", function() {
           _this.$el.addClass("dismissed");
         });
@@ -51,7 +50,6 @@
         this.$el.removeClass("dismissed");
         this.$("input").removeAttr("disabled");
         $(".subviews, .nav").addClass("less");
-        $(".subviews").attr("style", "overflow: hidden !important");
         this.$el.animate("addMenuShow", 200, "ease-in-out");
       }
     },
